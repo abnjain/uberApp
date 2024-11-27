@@ -1,0 +1,16 @@
+{
+  "name": "uberbackend",
+  "version": "1.0.0",
+  "description": "Cloning an application named uber it is a full fledged backend of the taxi driving application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "abnjain",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
+  }
+}
