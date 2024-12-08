@@ -255,3 +255,104 @@ This endpoint is used to log out the authenticated user by invalidating/blacklis
 
 - The user must be authenticated to access this endpoint.
 - The token is added to a blacklist to prevent further use.
+
+# Captain API Documentation
+
+## Captain Registration
+
+### Endpoint: `/captains/register`
+
+#### Method: POST
+
+This endpoint is used to register a new captain in the system. It requires the captain to provide their first name, last name, email, password, and vehicle details.
+
+#### Request Body
+
+The request body should be in JSON format and include the following fields:
+
+- `fullName`: An object containing:
+  - `firstName`: A string with a minimum length of 2 characters.
+  - `lastName`: A string with a minimum length of 2 characters.
+- `email`: A valid email address.
+- `password`: A string with a minimum length of 6 characters.
+- `vehicle`: An object containing:
+  - `color`: A string with a minimum length of 3 characters.
+  - `plate`: A string with a minimum length of 3 characters.
+  - `capacity`: A number with a minimum value of 1.
+  - `vehicleType`: A string that must be one of the following: "car", "motorcycle", "auto".
+
+Example request body:
+{
+"fullName": {
+"firstName": "Jane",
+"lastName": "Doe"
+},
+"email": "jane.doe@example.com",
+"password": "securePassword123",
+"vehicle": {
+"color": "Red",
+"plate": "XYZ123",
+"capacity": 4,
+"vehicleType": "car"
+}
+}
+This documentation provides a clear overview of how to use the /captains/register endpoint, including the required data format and possible responses.
+#### Responses
+
+- **201 Created**: 
+  - **Description**: Captain successfully registered.
+  - **Body**: Returns a JSON object containing the authentication token and captain details.
+  - **Example**:
+    ```json
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "captain": {
+        "fullName": {
+          "firstName": "Jane",
+          "lastName": "Doe"
+        },
+        "email": "jane.doe@example.com",
+        "vehicle": {
+          "color": "Red",
+          "plate": "XYZ123",
+          "capacity": 4,
+          "vehicleType": "car"
+        }
+      }
+    }
+    ```
+
+- **400 Bad Request**: 
+  - **Description**: Validation error due to invalid input data or if the captain already exists.
+  - **Body**: Returns a JSON object with an array of error messages or a message indicating the captain already exists.
+  - **Example**:
+    ```json
+    {
+      "errors": [
+        {
+          "msg": "Invalid Email",
+          "param": "email",
+          "location": "body"
+        },
+        {
+          "msg": "Color must be at least 3 characters long",
+          "param": "vehicle.color",
+          "location": "body"
+        }
+      ]
+    }
+    ```
+
+    Or
+
+    ```json
+    {
+      "message": "Captain Already Exist"
+    }
+    ```
+
+### Notes
+
+- Ensure that the email provided is unique and not already registered in the system.
+- Passwords are hashed before being stored in the database for security purposes.
+- The endpoint returns a JWT token upon successful registration, which can be used for authentication in subsequent requests.
