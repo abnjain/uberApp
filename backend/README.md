@@ -356,3 +356,173 @@ This documentation provides a clear overview of how to use the /captains/registe
 - Ensure that the email provided is unique and not already registered in the system.
 - Passwords are hashed before being stored in the database for security purposes.
 - The endpoint returns a JWT token upon successful registration, which can be used for authentication in subsequent requests.
+
+## Captain Login
+
+### Endpoint: `/captains/login`
+
+#### Method: POST
+
+This endpoint is used to authenticate a captain and provide a JWT token for subsequent requests.
+
+#### Request Body
+
+The request body should be in JSON format and include the following fields:
+
+- `email`: A valid email address.
+- `password`: A string with a minimum length of 6 characters.
+
+Example request body:
+{
+"email": "jane.doe@example.com",
+"password": "securePassword123"
+}
+
+
+#### Responses
+
+- **200 OK**: 
+  - **Description**: Captain successfully authenticated.
+  - **Body**: Returns a JSON object containing the authentication token and captain details.
+  - **Example**:
+    ```json
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "captain": {
+        "fullName": {
+          "firstName": "Jane",
+          "lastName": "Doe"
+        },
+        "email": "jane.doe@example.com",
+        "vehicle": {
+          "color": "Red",
+          "plate": "XYZ123",
+          "capacity": 4,
+          "vehicleType": "car"
+        }
+      }
+    }
+    ```
+
+- **400 Bad Request**: 
+  - **Description**: Validation error due to invalid input data.
+  - **Body**: Returns a JSON object with an array of error messages.
+  - **Example**:
+    ```json
+    {
+      "errors": [
+        {
+          "msg": "Invalid Email",
+          "param": "email",
+          "location": "body"
+        },
+        {
+          "msg": "Password must be at least 6 characters long",
+          "param": "password",
+          "location": "body"
+        }
+      ]
+    }
+    ```
+
+- **401 Unauthorized**: 
+  - **Description**: Authentication failed due to incorrect email or password.
+  - **Body**: Returns a JSON object with an error message.
+  - **Example**:
+    ```json
+    {
+      "message": "Invalid email or password."
+    }
+    ```
+
+### Notes
+
+- Ensure that the email and password provided are correct.
+- The endpoint returns a JWT token upon successful authentication, which can be used for authentication in subsequent requests.
+
+## Captain Profile
+
+### Endpoint: `/captains/profile`
+
+#### Method: GET
+
+This endpoint is used to retrieve the profile of the authenticated captain.
+
+#### Headers
+
+- `Authorization`: Bearer token obtained from login.
+
+#### Responses
+
+- **200 OK**: 
+  - **Description**: Successfully retrieved captain profile.
+  - **Body**: Returns a JSON object containing captain details.
+  - **Example**:
+    ```json
+    {
+      "fullName": {
+        "firstName": "Jane",
+        "lastName": "Doe"
+      },
+      "email": "jane.doe@example.com",
+      "vehicle": {
+        "color": "Red",
+        "plate": "XYZ123",
+        "capacity": 4,
+        "vehicleType": "car"
+      }
+    }
+    ```
+
+- **401 Unauthorized**: 
+  - **Description**: Authentication failed due to missing or invalid token.
+  - **Body**: Returns a JSON object with an error message.
+  - **Example**:
+    ```json
+    {
+      "message": "Authentication required."
+    }
+    ```
+
+### Notes
+
+- The captain must be authenticated to access this endpoint.
+
+## Captain Logout
+
+### Endpoint: `/captains/logout`
+
+#### Method: GET
+
+This endpoint is used to log out the authenticated captain by invalidating their token.
+
+#### Headers
+
+- `Authorization`: Bearer token obtained from login.
+
+#### Responses
+
+- **200 OK**: 
+  - **Description**: Successfully logged out.
+  - **Body**: Returns a JSON object with a success message.
+  - **Example**:
+    ```json
+    {
+      "message": "Captain Logged Out"
+    }
+    ```
+
+- **401 Unauthorized**: 
+  - **Description**: Authentication failed due to missing or invalid token.
+  - **Body**: Returns a JSON object with an error message.
+  - **Example**:
+    ```json
+    {
+      "message": "Authentication required."
+    }
+    ```
+
+### Notes
+
+- The captain must be authenticated to access this endpoint.
+- The token is added to a blacklist to prevent further use.
