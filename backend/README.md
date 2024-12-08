@@ -161,6 +161,15 @@ json
     }
     ```
 
+
+- `user`: An object containing:
+  - `fullName`: A string with a minimum length of 2 characters.
+    - `firstName`: A string with a minimum length of 2 characters.
+    - `lastName`: A string with a minimum length of 2 characters.
+  - `email`: A valid email address.
+  - `password`: A string with a minimum length of 6 characters.
+- `token`: JWT Token
+
 ### Notes
 
 - Ensure that the email and password provided are correct.
