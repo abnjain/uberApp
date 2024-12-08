@@ -174,3 +174,84 @@ json
 
 - Ensure that the email and password provided are correct.
 - The endpoint returns a JWT token upon successful authentication, which can be used for authentication in subsequent requests.
+
+## User Profile
+
+### Endpoint: `/users/profile`
+
+#### Method: GET
+
+This endpoint is used to retrieve the profile of the authenticated user.
+
+#### Headers
+
+- `Authorization`: Bearer token obtained from login.
+
+#### Responses
+
+- **200 OK**: 
+  - **Description**: Successfully retrieved user profile.
+  - **Body**: Returns a JSON object containing user details.
+  - **Example**:
+    ```json
+    {
+      "fullName": {
+        "firstName": "John",
+        "lastName": "Doe"
+      },
+      "email": "john.doe@example.com"
+    }
+    ```
+
+- **401 Unauthorized**: 
+  - **Description**: Authentication failed due to missing or invalid token.
+  - **Body**: Returns a JSON object with an error message.
+  - **Example**:
+    ```json
+    {
+      "message": "Authentication required."
+    }
+    ```
+
+### Notes
+
+- The user must be authenticated to access this endpoint.
+
+## User Logout
+
+### Endpoint: `/users/logout`
+
+#### Method: GET
+
+This endpoint is used to log out the authenticated user by invalidating/blacklisting their token.
+
+#### Headers
+
+- `Authorization`: Bearer token obtained from login.
+
+#### Responses
+
+- **200 OK**: 
+  - **Description**: Successfully logged out.
+  - **Body**: Returns a JSON object with a success message.
+  - **Example**:
+    ```json
+    {
+      "message": "Logged Out"
+    }
+    ```
+
+- **401 Unauthorized**: 
+  - **Description**: Authentication failed due to missing or invalid token.
+  - **Body**: Returns a JSON object with an error message.
+  - **Example**:
+    ```json
+    {
+      "message": "Authentication required."
+    }
+    ```
+
+### Notes
+
+- The user must be authenticated to access this endpoint.
+- The token is added to a blacklist to prevent further use.
