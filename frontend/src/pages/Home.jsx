@@ -41,7 +41,7 @@ const Home = () => {
     const { user } = useContext(UserDataContext)
 
     useEffect(() => {
-        socket.emit("join", { userType: "user", userId: user._id })
+        socket.emit("join", { userType: "user", userId: user.id })
     }, [ user ])
 
     socket.on('ride-confirmed', ride => {
